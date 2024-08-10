@@ -3,6 +3,9 @@
 $params = require(__DIR__ . '/params.php');
 $authClients = require(__DIR__ . '/auth-clients.php');
 
+Yii::setAlias('@bower', dirname(__DIR__) . '/vendor/bower-asset');
+Yii::setAlias('@bower-asset', dirname(__DIR__) . '/vendor/bower-asset');
+
 $config = [
     'id' => 'calibrator',
     'basePath' => dirname(__DIR__),
@@ -19,16 +22,13 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
-            'loginUrl'=> '/',
+            'loginUrl' => ['/site/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
         'log' => [
@@ -42,9 +42,13 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
         'urlManager' => [
-            'enablePrettyUrl' => false,
+            'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'site/index',
+                'login' => 'site/login',
+                'question/suggest' => 'question/suggest',
+                '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
             ],
         ],
         'authClientCollection' => [
@@ -63,18 +67,21 @@ $config = [
                 ],
             ],
         ],
-        'vkapi' => [
-            'class' => 'app\components\VkApi',
-            'appId' => $params['vkapp']['id'],
-            'appKey' => $params['vkapp']['key'],
-            'appToken' => $params['vkapp']['token'],
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => '@bower-asset/jquery/dist',
+                    'js' => [
+                        'jquery.min.js',
+                    ],
+                ],
+            ],
         ],
     ],
     'params' => $params,
 ];
 
 if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
@@ -87,3 +94,4 @@ if (YII_ENV_DEV) {
 }
 
 return $config;
+

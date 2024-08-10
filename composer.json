@@ -14,7 +14,9 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "yiisoft/yii2-authclient": ">=2.2.4"
+        "yiisoft/yii2-authclient": ">=2.2.4",
+        "bower-asset/jquery": "2.1.*@stable",
+        "bower-asset/bootstrap": "^3.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -22,7 +24,10 @@
         "yiisoft/yii2-faker": "~2.0.0"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
     },
     "extra": {
         "yii\\composer\\Installer::postCreateProject": {
@@ -41,7 +46,13 @@
         },
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
+            "bower-asset-library": "vendor/bower-asset"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
